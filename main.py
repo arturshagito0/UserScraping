@@ -1,5 +1,6 @@
 from dataframe_api import save_to_google_drive, populate_dataframe, create_new_spreadsheet, update_spreadsheet
-from login import login
+from find_location import find_locations
+from login import get_credentials
 import json
 import numpy as np
 import requests
@@ -7,7 +8,11 @@ import string
 import time
 import pandas as pd
 
-csfr, cookies = login()
+csfr, cookies = get_credentials()
+
+
+def get_credentials():
+    return csfr, cookies
 
 headers_users = {
     'authority': 'www.linkedin.com',
@@ -35,8 +40,9 @@ headers_users = {
 
 COUNT_LENGTH = 100
 GROUP_ID = 35222
-SAMPLE_FRACTION = 0.0002
+SAMPLE_FRACTION = 0.0001
 BLOCK_SIZE = 100
+SPREADSHEET_NAME = "TEST_USERS"
 
 
 class UserEntry:
@@ -86,20 +92,20 @@ def scrape(g_id):
                 if user not in unique_array:
                     unique_array = np.append(unique_array, user)
 
+        ddf = populate_dataframe(unique_array)
+        update_spreadsheet(unique_array.size, ddf, SPREADSHEET_NAME, "Sheet2")
+        unique_array = np.array([])
+
         print(f"Total users for letter {(i)}: {int(responseNo)}")
 
 
 leads = np.array([])
 
-ans = int(input("Group No: "))
-s_name = "TEST_USERS"
-
+# ans = int(input("Group No: "))
+ans = 35222
 
 def main():
     scrape(ans)
-    ddf = populate_dataframe(unique_array)
-    print(ddf)
-    update_spreadsheet(unique_array.size, ddf, "TEST_USERS", "")
-
+    find_locations(SPREADSHEET_NAME, "Sheet2")
 
 main()

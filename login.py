@@ -3,10 +3,10 @@ from selenium import webdriver
 import time
 from requests.auth import HTTPBasicAuth
 
-
 op = webdriver.ChromeOptions()
 op.add_argument('headless')
-driver = webdriver.Chrome("chromedriver.exe", options = op)
+# driver = webdriver.Chrome("chromedriver.exe", options=op)
+driver = webdriver.Chrome("chromedriver.exe")
 
 def sign_in(user, passw):
     time.sleep(2)
@@ -35,9 +35,10 @@ def login():
     driver.get("https://linkedin.com")
 
     sign_in("art_shagi@mail.ru", "Lightlight1313")
+    time.sleep(15)
     temp_label = ["lang", "bcookie", "bscookie", "li_alerts", "G_ENABLED_IDPS", "li_gc",
                   "li_rm", "AMCVS_14215E3D5995C57C0A495C55%40AdobeOrg", "aam_uuid",
-                  "_gcl_au","li_at", "liap" , "JSESSIONID", "li_mc", "lidc", "timezone",
+                  "_gcl_au", "li_at", "liap", "JSESSIONID", "li_mc", "lidc", "timezone",
                   "AMCV_14215E3D5995C57C0A495C55%40AdobeOrg"]
     cookies = ''
     csfr = ''
@@ -46,19 +47,17 @@ def login():
 
     cooks = driver.get_cookies()
 
-    response = requests.get(
-        'https://www.linkedin.com/login/ru?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin',
-        auth=HTTPBasicAuth('art_shagi@mail.ru', 'Lightlight1313'))
-
-    # print request object
-
-
     for j in temp_label:
         for i in cooks:
             if i['name'] == j:
                 if i['name'] == "JSESSIONID":
                     csfr = i["value"]
                 cookies += f"{j}={i['value']}; "
-    cookies = cookies[:len(cookies)-2]
-
+    cookies = cookies[:len(cookies) - 2]
+    driver.close()
     return csfr, f'{cookies}'
+
+csfr, cookies = login()
+
+def get_credentials():
+    return csfr, cookies
