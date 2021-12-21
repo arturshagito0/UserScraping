@@ -56,8 +56,7 @@ def populate_dataframe(user_list):
 
     return df
     
-def add_location_to_df(df):
-        return;
+
 
 # linked_url = "https://www.linkedin.com/groups/35222/"
 #
