@@ -1,4 +1,4 @@
-from dataframe_api import save_to_google_drive, populate_dataframe, create_new_spreadsheet, update_spreadsheet
+from dataframe_api import create_and_update_worksheet, populate_dataframe, create_new_spreadsheet, update_worksheet
 from find_location import find_locations
 from login import get_credentials
 import json
@@ -6,13 +6,10 @@ import numpy as np
 import requests
 import string
 import time
-import pandas as pd
 
 csfr, cookies = get_credentials()
 
 
-def get_credentials():
-    return csfr, cookies
 
 headers_users = {
     'authority': 'www.linkedin.com',
@@ -41,8 +38,9 @@ headers_users = {
 COUNT_LENGTH = 100
 GROUP_ID = 35222
 SAMPLE_FRACTION = 0.0001
-BLOCK_SIZE = 100
+BLOCK_AUTOMATION = False
 SPREADSHEET_NAME = "TEST_USERS"
+WORKSHEET_NAME = "Sheet2"
 
 
 class UserEntry:
@@ -57,7 +55,6 @@ class UserEntry:
 
 
 unique_array = np.array([])
-leads_frame = pd.DataFrame()
 
 
 def scrape(g_id):
@@ -92,20 +89,24 @@ def scrape(g_id):
                 if user not in unique_array:
                     unique_array = np.append(unique_array, user)
 
-        ddf = populate_dataframe(unique_array)
-        update_spreadsheet(unique_array.size, ddf, SPREADSHEET_NAME, "Sheet2")
-        unique_array = np.array([])
+        if BLOCK_AUTOMATION:
+            ddf = populate_dataframe(unique_array)
+            update_worksheet(unique_array.size, ddf, SPREADSHEET_NAME, WORKSHEET_NAME)
+            unique_array = np.array([])
 
         print(f"Total users for letter {(i)}: {int(responseNo)}")
 
 
-leads = np.array([])
-
-# ans = int(input("Group No: "))
-ans = 35222
+ans = int(input("Group No: "))
+# ans = 35222
+ans2 = 3428054
 
 def main():
     scrape(ans)
-    find_locations(SPREADSHEET_NAME, "Sheet2")
+    if not BLOCK_AUTOMATION:
+        ddf = populate_dataframe(unique_array)
+        update_worksheet(ddf, SPREADSHEET_NAME, WORKSHEET_NAME)
+    find_locations(SPREADSHEET_NAME, WORKSHEET_NAME, 50)
+
 
 main()

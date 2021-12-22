@@ -3,7 +3,9 @@ import json
 import pandas as pd
 import requests
 from login import get_credentials
+
 csfr, cookies = get_credentials()
+
 headers_location = headers = {
     'authority': 'www.linkedin.com',
     'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
@@ -36,7 +38,7 @@ def get_user_location(p_url):
     return ""
 
 
-def find_locations(table_name, sheet_name):
+def find_locations(table_name, sheet_name, n ):
     gc = gspread.service_account(filename='creds.json')
     sh = gc.open(table_name)
     worksheet = sh.worksheet(sheet_name)
@@ -44,7 +46,7 @@ def find_locations(table_name, sheet_name):
     headers = data.pop(0)
     df = pd.DataFrame(data, columns=headers)
 
-    df['location'] = df['id'][:1000].apply(lambda x: get_user_location(x))
+    df['location'] = df['id'][:n].apply(lambda x: get_user_location(x))
     df = df.fillna("mt")
     worksheet.update([df.columns.values.tolist()] + df.values.tolist())
     print(df)
