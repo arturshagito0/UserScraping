@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="640" height="480" viewBox="0 0 640 480" xml:space="preserve">
+<desc>Created with Fabric.js 3.6.3</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 224.5 224.5)"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(53,66,174); fill-rule: nonzero; opacity: 1;"  transform=" translate(-224, -256)" d="M 319.1 232 h -72 V 160 c 0 -13.25 -10.74 -24 -23.1 -24 S 199.1 146.7 199.1 160 v 72 H 127.1 C 114.7 232 103.1 242.7 103.1 256 S 114.7 280 127.1 280 h 71.1 V 352 c 0 13.25 10.75 24 24 24 s 23.1 -10.75 23.1 -24 V 280 h 72 c 13.25 0 23.1 -10.75 23.1 -24 S 333.3 232 319.1 232 z M 384 32 H 64 C 28.65 32 0 60.65 0 96 v 320 c 0 35.35 28.65 64 64 64 h 320 c 35.35 0 64 -28.65 64 -64 V 96 C 448 60.65 419.3 32 384 32 z M 400 416 c 0 8.822 -7.178 16 -16 16 H 64 c -8.822 0 -16 -7.178 -16 -16 V 96 c 0 -8.822 7.178 -16 16 -16 h 320 c 8.822 0 16 7.178 16 16 V 416 z" stroke-linecap="round" />
+</g>
+</svg>
