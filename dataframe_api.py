@@ -12,6 +12,7 @@ def create_and_update_worksheet(df, name, wsname):
     gc = gspread.service_account(filename='creds.json')
     sh = gc.open(name)
     worksheet = sh.add_worksheet(title=f"{wsname}", rows="10000", cols="20")
+    # worksheet.append_rows(['firstname', 'lastname', 'occupation', 'id', 'user_url'])
     worksheet.update([df.columns.values.tolist()] + df.values.tolist())
 
 
@@ -34,3 +35,20 @@ def populate_dataframe(user_list):
     except:
         df = pd.DataFrame()
     return df
+
+
+def filter_dataframe(df, occupation_tags, location_tags):
+    aux = pd.DataFrame()
+    if occupation_tags != "":
+        o_tags = occupation_tags.split('/')
+        for t in o_tags:
+            temp = df[df.occupation.str.contains(t)]
+            aux = pd.concat([aux, temp])
+
+    if location_tags != "":
+        l_tags = location_tags.split('/')
+        for tag in l_tags:
+            temp = df[df.location.str.contains(tag)]
+            aux = pd.concat([aux, temp])
+
+    return aux

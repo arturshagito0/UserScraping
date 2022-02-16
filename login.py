@@ -52,9 +52,9 @@ def login():
     email = cs[0].strip()
     pwd = cs[1].strip()
 
-    # sign_in(email, pwd)
+    sign_in(email, pwd)
 
-    manual_sign_in()
+    # manual_sign_in()
 
     time.sleep(15)
     temp_label = ["lang", "bcookie", "bscookie", "li_alerts", "G_ENABLED_IDPS", "li_gc",

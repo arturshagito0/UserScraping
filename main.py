@@ -9,8 +9,6 @@ import time
 
 csfr, cookies = get_credentials()
 
-
-
 headers_users = {
     'authority': 'www.linkedin.com',
     'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
@@ -40,7 +38,8 @@ GROUP_ID = 35222
 SAMPLE_FRACTION = 0.0001
 BLOCK_AUTOMATION = False
 SPREADSHEET_NAME = "TEST_USERS"
-WORKSHEET_NAME = "Sheet2"
+WORKSHEET_NAME = "Sheet3"
+TEST_WS = "Sheet3"
 
 
 class UserEntry:
@@ -57,7 +56,7 @@ class UserEntry:
 unique_array = np.array([])
 
 
-def scrape(g_id):
+def scrape(g_id, fraction):
     global unique_array
 
     for i in string.ascii_lowercase:
@@ -69,7 +68,7 @@ def scrape(g_id):
         try:
 
             responseNo = json.loads(requests.get(temp_url, headers=headers_users).text)['data']['paging'][
-                             'total'] * SAMPLE_FRACTION
+                             'total'] * fraction
         except:
             repsonseNo = 0
 
@@ -97,16 +96,17 @@ def scrape(g_id):
         print(f"Total users for letter {(i)}: {int(responseNo)}")
 
 
-ans = int(input("Group No: "))
-# ans = 35222
-ans2 = 3428054
 
-def main():
-    scrape(ans)
+# ans = 35222
+
+
+def scrape_and_save(location_needed, group_no, fraction):
+    scrape(group_no, fraction)
     if not BLOCK_AUTOMATION:
         ddf = populate_dataframe(unique_array)
         update_worksheet(ddf, SPREADSHEET_NAME, WORKSHEET_NAME)
-    find_locations(SPREADSHEET_NAME, WORKSHEET_NAME, 50)
+    if location_needed:
+        find_locations(SPREADSHEET_NAME, WORKSHEET_NAME, 50)
 
 
-main()
+scrape_and_save(False, 35222, SAMPLE_FRACTION)
