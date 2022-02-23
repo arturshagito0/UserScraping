@@ -2,6 +2,15 @@ import gspread
 import numpy as np
 import pandas as pd
 
+
+def open_test_dataset():
+    gc = gspread.service_account(filename='creds.json')
+    sh = gc.open("TEST_USERS")
+    worksheet = sh.worksheet("TEST")
+    return pd.DataFrame(worksheet.get_all_records())
+
+
+
 def create_new_spreadsheet(name):
     gc = gspread.service_account(filename='creds.json')
     sh = gc.create(name)

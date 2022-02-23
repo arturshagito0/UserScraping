@@ -15,9 +15,10 @@ import numpy as np
 import pandas as pd
 import requests
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QTableView
+from PyQt5.QtCore import QAbstractTableModel, Qt
 
-from dataframe_api import create_and_update_worksheet, populate_dataframe, update_worksheet, filter_dataframe
+from dataframe_api import create_and_update_worksheet, populate_dataframe, update_worksheet, filter_dataframe, open_test_dataset
 from find_location import find_locations
 from login import get_credentials
 
@@ -2826,6 +2827,15 @@ class Ui_LinledInScraper(QtWidgets.QWidget):
         self.requestsList.clicked.connect(self.requestClicked)
         self.filterButton.clicked.connect(self.filterRequest)
         self.retranslateUi(LinledInScraper)
+
+        self.requestsList.addItem("TEST")
+        newRequest = self.ScrapeRequest(self, "TEST", 35222, 0.0001, False)
+        newRequest.finished = True
+        newRequest.count = 1683
+        newRequest.dataSet = open_test_dataset()
+        self.finishedRequests.append(newRequest)
+
+
         QtCore.QMetaObject.connectSlotsByName(LinledInScraper)
 
     def createNewRequest(self):
@@ -2966,6 +2976,24 @@ class Ui_LinledInScraper(QtWidgets.QWidget):
             scrape_and_save(False, self3.groupID, self3.scrapePercent)
             self3.finished = True
             self3.count = unique_array.size
+
+    class pandasModel(QAbstractTableModel):
+        def __init__(self, data):
+            QAbstractTableModel.__init__(self)
+            self._data = data
+        def rowCount(self, parent=None):
+            return self._data.shape[0]
+        def columnCount(self,_parent=None):
+            return self._data.shape[1]
+        def data(self, index, role = Qt.DisplayRole):
+            if index.isValid():
+                if role == Qt.DisplayRole:
+                    return str(self._data.iloc[index.row(), index.column()])
+            return None
+
+        def headerData(self, col, orientation, role):
+            if orientation == Qt.Horizontal and role == Qt.DisplayRole:
+                return self._data.columns[col]
 
     def executeScrapeRequest(self):
         errorMessage = ""

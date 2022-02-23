@@ -8,10 +8,11 @@ from selenium.webdriver.support import expected_conditions as EC
 op = webdriver.ChromeOptions()
 op.add_argument('headless')
 # driver = webdriver.Chrome("chromedriver.exe", options=op)
-driver = webdriver.Chrome("chromedriver.exe")
 
 
 def sign_in(user, passw):
+    driver = webdriver.Chrome("chromedriver.exe")
+
     time.sleep(2)
     cookies_button = driver.find_element_by_xpath(
         '/html/body/div[1]/div/section/div/div[2]/button[2]')
@@ -76,8 +77,9 @@ def login():
     driver.close()
     return csfr, f'{cookies}'
 
+csfr, cookies = "", ""
 
-csfr, cookies = login()
+#csfr, cookies = login()
 
 
 def get_credentials():
